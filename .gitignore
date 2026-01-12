@@ -27,8 +27,6 @@ id_rsa.pub
 
 # Maven 
 target/
-*.jar
-*.war
 *.class
 .m2/
 
