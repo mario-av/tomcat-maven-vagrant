@@ -1,4 +1,4 @@
-# Tomcat and Maven Deployment with Vagrant
+# Tomcat 9 and Maven Deployment with Vagrant
 
 **Author:** Mario Acosta Vargas
 
@@ -6,7 +6,7 @@
 
 **Technology Stack:** Vagrant · Debian Bullseye · Tomcat 9 · Maven · OpenJDK 11
 
-This project provides an automated deployment of a fully configured **Tomcat application server** with **Maven deployment support** inside a Debian Bullseye virtual machine using **Vagrant** and **VirtualBox**.
+This project provides an automated deployment of a fully configured **Tomcat 9 application server** with **Maven deployment support** inside a Debian Bullseye virtual machine using **Vagrant** and **VirtualBox**.
 
 The environment is provisioned through a single automated script (`bootstrap.sh`), which ensures consistent, repeatable, and reliable configuration across all deployments.
 
@@ -14,7 +14,7 @@ The environment is provisioned through a single automated script (`bootstrap.sh`
 
 The virtual machine includes:
 
-- **Tomcat Application Server** configured with:
+- **Tomcat 9 Application Server** configured with:
 
   - Web-based Manager GUI for manual deployments
 
@@ -120,6 +120,8 @@ From your host machine browser:
 http://localhost:8080
 ```
 
+![Tomcat Home Page](config/assets/tomcat_home.png)
+
 ---
 
 ### 5.3 - Access Manager GUI
@@ -129,6 +131,8 @@ http://localhost:8080/manager/html
 ```
 
 **Credentials:** `alumno` / `1234`
+
+![Tomcat Manager GUI](config/assets/manager_gui.png)
 
 ---
 
@@ -181,12 +185,16 @@ Expected output:
 
 ```
 [INFO] Deploying war to http://localhost:8080/rps
+Uploaded: http://localhost:8080/manager/text/deploy?path=%2Frps (11 KB at 571.3 KB/sec)
+[INFO] OK - Deployed application at context path [/rps]
 [INFO] BUILD SUCCESS
 ```
 
 ### 7.3 - Verify deployment
 
 Access the application at: `http://localhost:8080/rps`
+
+![Rock Paper Scissors App](config/assets/rps_app.png)
 
 ### 7.4 - Other Maven commands
 
@@ -200,7 +208,7 @@ Access the application at: `http://localhost:8080/rps`
 
 # 8. How Everything Works
 
-### Tomcat Configuration
+### ✅ Tomcat 9 Configuration
 
 The server is configured with:
 
@@ -210,7 +218,7 @@ The server is configured with:
 
 - Manager apps installed via `tomcat9-admin` package
 
-### Maven Configuration
+### ✅ Maven Configuration
 
 Maven is configured with:
 
