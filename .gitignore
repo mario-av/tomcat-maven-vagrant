@@ -1,0 +1,36 @@
+# Vagrant
+.vagrant/
+*.box
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# SSH keys 
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Maven 
+target/
+*.jar
+*.war
+*.class
+.m2/
+
+# Node modules 
+node_modules/
