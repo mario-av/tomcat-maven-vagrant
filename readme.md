@@ -120,7 +120,7 @@ From your host machine browser:
 http://localhost:8080
 ```
 
-![Tomcat Home Page](config/assets/tomcat_home.png)
+![Tomcat Home Page](config/assets/tomcat.png)
 
 ---
 
@@ -132,7 +132,7 @@ http://localhost:8080/manager/html
 
 **Credentials:** `alumno` / `1234`
 
-![Tomcat Manager GUI](config/assets/manager_gui.png)
+![Tomcat Manager GUI](config/assets/manager.png)
 
 ---
 
@@ -194,7 +194,7 @@ Uploaded: http://localhost:8080/manager/text/deploy?path=%2Frps (11 KB at 571.3 
 
 Access the application at: `http://localhost:8080/rps`
 
-![Rock Paper Scissors App](config/assets/rps_app.png)
+![Rock Paper Scissors App](config/assets/rps.png)
 
 ### 7.4 - Other Maven commands
 
@@ -208,7 +208,7 @@ Access the application at: `http://localhost:8080/rps`
 
 # 8. How Everything Works
 
-### ✅ Tomcat 9 Configuration
+### Tomcat 9 Configuration
 
 The server is configured with:
 
@@ -218,7 +218,7 @@ The server is configured with:
 
 - Manager apps installed via `tomcat9-admin` package
 
-### ✅ Maven Configuration
+### Maven Configuration
 
 Maven is configured with:
 

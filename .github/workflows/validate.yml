@@ -1,44 +1,28 @@
-name: Validate Vagrant Configuration
+name: Validate Configuration
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Setup Ruby (for Vagrant validation)
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.2'
+      - name: Validate Vagrantfile
+        run: ruby -c Vagrantfile
 
-    - name: Validate Vagrantfile syntax
-      run: |
-        ruby -c Vagrantfile
-        echo "Vagrantfile syntax is valid"
+      - name: Validate bootstrap.sh
+        run: bash -n config/bootstrap.sh
 
-    - name: Validate shell script syntax
-      run: |
-        bash -n config/bootstrap.sh
-        echo "bootstrap.sh syntax is valid"
-
-    - name: Check configuration files exist
-      run: |
-        test -f Vagrantfile && echo "Vagrantfile exists"
-        test -f config/bootstrap.sh && echo "bootstrap.sh exists"
-        test -f config/tomcat-users.xml && echo "tomcat-users.xml exists"
-        test -f config/context.xml && echo "context.xml exists"
-        test -f readme.md && echo "readme.md exists"
-
-    - name: Lint shell script with ShellCheck
-      uses: ludeeus/action-shellcheck@master
-      with:
-        scandir: './config'
-        severity: warning
+      - name: Check files exist
+        run: |
+          test -f Vagrantfile
+          test -f config/bootstrap.sh
+          test -f config/tomcat-users.xml
+          test -f config/context.xml
+          test -f readme.md

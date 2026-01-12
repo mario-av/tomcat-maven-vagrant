@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
 
   # 4. Port Forwarding
   config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 22, host: 2026, id: "ssh"
 
   # 5. VirtualBox Provider Settings
   config.vm.provider "virtualbox" do |vb|

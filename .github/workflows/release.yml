@@ -1,75 +1,23 @@
-name: Package Release
+name: Release
 
 on:
   push:
-    tags:
-      - "v*"
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Release version (e.g., v1.0.0)"
-        required: true
-        default: "v1.0.0"
+    tags: ["v*"]
 
 jobs:
   package:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Get version
-        id: version
+      - name: Create package
         run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
-          else
-            echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
-          fi
+          zip -r tomcat-maven-vagrant.zip \
+            Vagrantfile config/ readme.md LICENSE \
+            -x "*.git*" -x "*.vagrant*"
 
-      - name: Create release package
-        run: |
-          mkdir -p release
-          # Package all necessary files
-          zip -r release/tomcat-maven-vagrant-${{ steps.version.outputs.VERSION }}.zip \
-            Vagrantfile \
-            config/ \
-            readme.md \
-            LICENSE \
-            -x "*.git*" \
-            -x "*.vagrant*"
-
-          # Create tar.gz as well
-          tar -czvf release/tomcat-maven-vagrant-${{ steps.version.outputs.VERSION }}.tar.gz \
-            --exclude='.git*' \
-            --exclude='.vagrant*' \
-            Vagrantfile \
-            config/ \
-            readme.md \
-            LICENSE
-
-      - name: Generate SHA256 checksums
-        run: |
-          cd release
-          sha256sum *.zip *.tar.gz > SHA256SUMS.txt
-          cat SHA256SUMS.txt
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-package-${{ steps.version.outputs.VERSION }}
-          path: release/
-          retention-days: 30
-
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            release/*.zip
-            release/*.tar.gz
-            release/SHA256SUMS.txt
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: tomcat-maven-vagrant.zip

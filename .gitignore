@@ -2,33 +2,23 @@
 .vagrant/
 *.box
 
-# OS generated files
+# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
+
+# Editor
+*.swp
+*~
+.idea/
+.vscode/
 
 # Logs
 *.log
 
-# SSH keys 
-*.pem
-*.key
-id_rsa
-id_rsa.pub
-
-# Temporary files
+# Temp
 *.tmp
-*.temp
 *.bak
 
-# Maven 
+# Maven build output
 target/
 *.class
-.m2/
-
-# Node modules 
-node_modules/
