@@ -1,6 +1,6 @@
 # Stage 1: Prepare the WAR (Simulation of build/retrieval)
 FROM alpine as builder
-LABEL version="2.0.3"
+LABEL version="2.1.0"
 WORKDIR /app
 COPY config/tomcat1.war .
 

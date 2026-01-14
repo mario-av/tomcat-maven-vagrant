@@ -10,14 +10,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     steps:
     - uses: actions/checkout@v3
 
-    - name: Build Docker Image (Multi-stage)
-      run: docker build -t my-app-multi -f docker/Dockerfile.multistage .
+    - name: Log in to the Container registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build Docker Image (Single-stage)
-      run: docker build -t my-app-single -f docker/Dockerfile.singlestage .
+    - name: Build and Push Docker Image (Multi-stage)
+      run: |
+        docker build -t ghcr.io/${{ github.repository_owner }}/app-multistage:latest -f docker/Dockerfile.multistage .
+        docker push ghcr.io/${{ github.repository_owner }}/app-multistage:latest
+
+    - name: Build and Push Docker Image (Single-stage)
+      run: |
+        docker build -t ghcr.io/${{ github.repository_owner }}/app-singlestage:latest -f docker/Dockerfile.singlestage .
+        docker push ghcr.io/${{ github.repository_owner }}/app-singlestage:latest
 
     - name: Build Summary
       if: always()
@@ -25,5 +40,5 @@ jobs:
         echo "## Build Summary :package:" >> $GITHUB_STEP_SUMMARY
         echo "| Artifact | Type | Status |" >> $GITHUB_STEP_SUMMARY
         echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
-        echo "| Docker Image | Multi-stage | [OK] Built |" >> $GITHUB_STEP_SUMMARY
-        echo "| Docker Image | Single-stage | [OK] Built |" >> $GITHUB_STEP_SUMMARY
+        echo "| Docker Image | Multi-stage | [OK] Published to GHCR |" >> $GITHUB_STEP_SUMMARY
+        echo "| Docker Image | Single-stage | [OK] Published to GHCR |" >> $GITHUB_STEP_SUMMARY

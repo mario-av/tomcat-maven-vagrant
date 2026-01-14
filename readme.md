@@ -3,7 +3,7 @@
 **Author:** Mario Acosta Vargas
 
 **Date:** January 2026
-**Version:** 2.0.3
+**Version:** 2.1.0
 
 **Technology Stack:** Vagrant · Debian Bullseye · Tomcat 9 · Maven · OpenJDK 11 · Docker
 
