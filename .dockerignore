@@ -1,0 +1,5 @@
+.git
+.vagrant
+.github
+*.box
+config/assets
