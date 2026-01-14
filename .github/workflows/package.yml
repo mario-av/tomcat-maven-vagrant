@@ -24,15 +24,16 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Build and Push Docker Image (Multi-stage)
+    - name: Connect and Publish
       run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/app-multistage:latest -f docker/Dockerfile.multistage .
-        docker push ghcr.io/${{ github.repository_owner }}/app-multistage:latest
+        # Convert repository owner to lowercase to ensure valid docker tag
+        OWNER="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
+        
+        docker build -t ghcr.io/$OWNER/app-multistage:latest -f docker/Dockerfile.multistage .
+        docker push ghcr.io/$OWNER/app-multistage:latest
 
-    - name: Build and Push Docker Image (Single-stage)
-      run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/app-singlestage:latest -f docker/Dockerfile.singlestage .
-        docker push ghcr.io/${{ github.repository_owner }}/app-singlestage:latest
+        docker build -t ghcr.io/$OWNER/app-singlestage:latest -f docker/Dockerfile.singlestage .
+        docker push ghcr.io/$OWNER/app-singlestage:latest
 
     - name: Build Summary
       if: always()
