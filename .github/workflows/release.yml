@@ -5,19 +5,32 @@ on:
     tags: ["v*"]
 
 jobs:
-  package:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Create package
+      - name: Create Artifact Archive
         run: |
           zip -r tomcat-maven-vagrant.zip \
-            Vagrantfile config/ readme.md LICENSE \
-            -x "*.git*" -x "*.vagrant*"
+            Vagrantfile config/ readme.md LICENSE docker/ \
+            -x "*.git*" -x "*.vagrant*" -x ".github/*" -x ".dockerignore"
 
-      - name: Release
+      - name: Create Release
+        id: create_release
         uses: softprops/action-gh-release@v1
         with:
           files: tomcat-maven-vagrant.zip
+          generate_release_notes: true
+
+      - name: Release Summary
+        if: always()
+        run: |
+          echo "## Release Summary :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "| Component | Status | Info |" >> $GITHUB_STEP_SUMMARY
+          echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+          echo "| Archive | [OK] Created | tomcat-maven-vagrant.zip |" >> $GITHUB_STEP_SUMMARY
+          echo "| GitHub Release | [OK] Published | ${{ github.ref_name }} |" >> $GITHUB_STEP_SUMMARY
