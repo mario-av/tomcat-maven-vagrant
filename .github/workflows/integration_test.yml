@@ -42,9 +42,9 @@ jobs:
         echo "## Test Results :clipboard:" >> $GITHUB_STEP_SUMMARY
         echo "| Test Suite | Test Case | Status | Detail | Timestamp |" >> $GITHUB_STEP_SUMMARY
         echo "| :--- | :--- | :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
-        if [ "${{ env.STATUS }}" == "PASS" ]; then
+        if [ "$STATUS" == "PASS" ]; then
              ICON="[OK]"
         else
              ICON="[FAIL]"
         fi
-        echo "| Infrastructure | Tomcat Availability | $ICON ${{ env.STATUS }} | ${{ env.DETAIL }} | $(date) |" >> $GITHUB_STEP_SUMMARY
+        echo "| Infrastructure | Tomcat Availability | $ICON $STATUS | $DETAIL | $(date) |" >> $GITHUB_STEP_SUMMARY
