@@ -1,0 +1,11 @@
+# Stage 1: Prepare the WAR (Simulation of build/retrieval)
+FROM alpine as builder
+LABEL version="2.0.3"
+WORKDIR /app
+COPY config/tomcat1.war .
+
+# Stage 2: Deploy to Tomcat
+FROM tomcat:9-jdk11-openjdk
+COPY --from=builder /app/tomcat1.war /usr/local/tomcat/webapps/
+EXPOSE 8080
+CMD ["catalina.sh", "run"]

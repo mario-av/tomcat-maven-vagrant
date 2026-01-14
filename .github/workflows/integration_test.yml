@@ -1,0 +1,50 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  test-docker:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build Docker Image (Single-stage)
+      # Build the image using the configuration from the project root
+      run: docker build -t app-test -f docker/Dockerfile.singlestage .
+
+    - name: Run Docker Container
+      run: docker run -d -p 8080:8080 --name test-container app-test
+
+    - name: Wait for Tomcat to start
+      run: sleep 15
+
+    - name: Verify Application Endpoint
+      id: test_endpoint
+      run: |
+        HTTP_CODE=$(curl -o /dev/null -s -w "%{http_code}\n" http://localhost:8080/tomcat1/)
+        if [ "$HTTP_CODE" = "200" ]; then
+          echo "STATUS=PASS" >> $GITHUB_ENV
+          echo "DETAIL=HTTP 200 OK" >> $GITHUB_ENV
+        else
+          echo "STATUS=FAIL" >> $GITHUB_ENV
+          echo "DETAIL=HTTP $HTTP_CODE" >> $GITHUB_ENV
+          exit 1
+        fi
+
+    - name: Generate Test Report
+      if: always()
+      run: |
+        echo "## Test Results :clipboard:" >> $GITHUB_STEP_SUMMARY
+        echo "| Test Suite | Test Case | Status | Detail | Timestamp |" >> $GITHUB_STEP_SUMMARY
+        echo "| :--- | :--- | :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ env.STATUS }}" == "PASS" ]; then
+             ICON="[OK]"
+        else
+             ICON="[FAIL]"
+        fi
+        echo "| Infrastructure | Tomcat Availability | $ICON ${{ env.STATUS }} | ${{ env.DETAIL }} | $(date) |" >> $GITHUB_STEP_SUMMARY

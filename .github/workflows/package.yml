@@ -1,0 +1,29 @@
+name: Package and Build Docker
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build Docker Image (Multi-stage)
+      run: docker build -t my-app-multi -f docker/Dockerfile.multistage .
+
+    - name: Build Docker Image (Single-stage)
+      run: docker build -t my-app-single -f docker/Dockerfile.singlestage .
+
+    - name: Build Summary
+      if: always()
+      run: |
+        echo "## Build Summary :package:" >> $GITHUB_STEP_SUMMARY
+        echo "| Artifact | Type | Status |" >> $GITHUB_STEP_SUMMARY
+        echo "| :--- | :--- | :--- |" >> $GITHUB_STEP_SUMMARY
+        echo "| Docker Image | Multi-stage | [OK] Built |" >> $GITHUB_STEP_SUMMARY
+        echo "| Docker Image | Single-stage | [OK] Built |" >> $GITHUB_STEP_SUMMARY

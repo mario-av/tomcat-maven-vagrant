@@ -3,6 +3,7 @@
 **Author:** Mario Acosta Vargas
 
 **Date:** January 2026
+**Version:** 2.0.3
 
 **Technology Stack:** Vagrant · Debian Bullseye · Tomcat 9 · Maven · OpenJDK 11
 
@@ -284,3 +285,33 @@ sudo systemctl restart tomcat9
 | `http://localhost:8080/rps`               | Rock-Paper-Scissors (Maven) |
 
 ---
+
+# 12. Extra: Docker Deployment
+
+This project also includes a containerized deployment option using Docker.
+
+### 12.1 - Build Approaches
+
+1. **Single-Stage**: Deploys the existing `config/tomcat1.war`.
+2. **Multi-Stage**: Simulates a build process and deploys `config/tomcat1.war`.
+
+### 12.2 - How to Run
+
+All commands must be run from the project root (`tarea-mav/`).
+
+```bash
+# Single-stage
+docker build -t app-singlestage -f docker/Dockerfile.singlestage .
+docker run -d -p 8082:8080 app-singlestage
+
+# Multi-stage
+docker build -t app-multistage -f docker/Dockerfile.multistage .
+docker run -d -p 8081:8080 app-multistage
+```
+
+### 12.3 - CI/CD Pipelines
+
+The project includes GitHub Actions workflows that generate documentation-style summaries:
+
+- **Package**: Builds Docker images.
+- **Integration Tests**: verifying the deployment using `curl` and outputs a summary table.
