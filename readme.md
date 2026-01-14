@@ -1,11 +1,11 @@
-# Tomcat 9 and Maven Deployment with Vagrant
+# Tomcat 9 and Maven Deployment with Vagrant & Docker
 
 **Author:** Mario Acosta Vargas
 
 **Date:** January 2026
 **Version:** 2.0.3
 
-**Technology Stack:** Vagrant · Debian Bullseye · Tomcat 9 · Maven · OpenJDK 11
+**Technology Stack:** Vagrant · Debian Bullseye · Tomcat 9 · Maven · OpenJDK 11 · Docker
 
 This project provides an automated deployment of a fully configured **Tomcat 9 application server** with **Maven deployment support** inside a Debian Bullseye virtual machine using **Vagrant** and **VirtualBox**.
 
